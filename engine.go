@@ -36,25 +36,18 @@ func (e *Engine) Tick() {
 }
 
 func ForcesBetween(p1, p2 *Particle) (f1, f2 *Vector) {
-	angle1 := p1.C.Angle(p2.C)
-	angle2 := p2.C.Angle(p1.C)
-
 	distance := p1.C.Distance(p2.C)
-
 	force := Gravity * float64(p1.GetMass()*p2.GetMass()) / distance * distance
 
-	return &Vector{
-			Angle: angle1,
-			Value: force,
-		},
-		&Vector{
-			Angle: angle2,
-			Value: force,
-		}
+	v1 := &Vector{C: p2.C.Minus(p1.C)}
+	v2 := &Vector{C: p1.C.Minus(p2.C)}
+
+	return v1.SetValue(force),
+		v2.SetValue(force)
 }
 
 func ApplyForceToParticale(p *Particle, f *Vector) {
-	a := f.Value / p.GetMass()
-	aVector := &Vector{Angle: f.Angle, Value: a}
-	p.Speed = p.Speed.Plus(aVector)
+	a := f.Value() / p.GetMass()
+	acceleration := f.SetValue(a)
+	p.Speed = p.Speed.Plus(acceleration)
 }

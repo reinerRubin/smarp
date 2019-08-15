@@ -8,44 +8,31 @@ type Coord struct {
 	X, Y float64
 }
 
-func (a *Coord) Angle(o *Coord) float64 {
-	x := o.X - a.X
-	y := o.Y - a.Y
-
-	tgk := y / x
-	angle := math.Atan(tgk)
-
-	if x < 0 && y < 0 {
-		angle = math.Pi + angle
-	}
-	if x < 0 && y > 0 {
-		angle = -angle
-		angle = math.Pi/2 + (math.Pi/2 - angle)
-	}
-	if y < 0 && x > 0 {
-		angle = -angle
-		angle = math.Pi + math.Pi/2 + (math.Pi/2 - angle)
-	}
-
-	return angle
-}
-
 func (a *Coord) Distance(o *Coord) float64 {
 	x := math.Abs(o.X - a.X)
 	y := math.Abs(o.Y - a.Y)
 
-	return math.Sqrt(x*x + y + y)
+	return math.Sqrt(x*x + y*y)
 
 }
 
 func (a *Coord) ApplyVector(v *Vector) {
-	a.X += math.Cos(v.Angle) * v.Value
-	a.Y += math.Sin(v.Angle) * v.Value
+	a.X += v.C.X
+	a.Y += v.C.Y
 }
 
-func (a *Coord) Adjust(maxx, maxy float64) {
-	a.X = AdjustX(a.X, maxx)
-	a.Y = AdjustX(a.Y, maxy)
+func (a *Coord) Plus(o *Coord) *Coord {
+	ox := a.X + o.X
+	oy := a.Y + o.Y
+
+	return &Coord{X: ox, Y: oy}
+}
+
+func (a *Coord) Minus(o *Coord) *Coord {
+	ox := a.X - o.X
+	oy := a.Y - o.Y
+
+	return &Coord{X: ox, Y: oy}
 }
 
 func AdjustX(x, maxx float64) float64 {
@@ -58,4 +45,9 @@ func AdjustX(x, maxx float64) float64 {
 	}
 
 	return x
+}
+
+func (a *Coord) Adjust(maxx, maxy float64) {
+	a.X = AdjustX(a.X, maxx)
+	a.Y = AdjustX(a.Y, maxy)
 }
