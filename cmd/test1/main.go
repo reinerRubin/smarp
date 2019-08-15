@@ -18,7 +18,7 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"math"
 	"os"
 	"time"
 
@@ -43,12 +43,12 @@ func main() {
 	defer screen.ClearResources()
 	screen.Clear()
 
-	logFile, err := os.Create("/tmp/log")
-	if err != nil {
-		os.Exit(1)
-	}
-	log.SetOutput(logFile)
-	defer logFile.Close()
+	// logFile, err := os.Create("/tmp/log")
+	// if err != nil {
+	//	os.Exit(1)
+	// }
+	// log.SetOutput(logFile)
+	// defer logFile.Close()
 
 	e := &smarp.Engine{
 		Maxx: func() float64 { x, _ := screen.Size(); return float64(x) },
@@ -58,19 +58,20 @@ func main() {
 				C:          &smarp.Coord{X: 20, Y: 20},
 				Speed:      &smarp.Vector{},
 				CharToShow: '1',
-				Mass:       0.03,
+				Mass:       0.01,
 			},
 			&smarp.Particle{
 				C:          &smarp.Coord{X: 40, Y: 16},
-				Speed:      &smarp.Vector{Angle: 0, Value: 0.5},
+				Speed:      &smarp.Vector{Angle: 0, Value: 0.3},
 				CharToShow: '2',
 				Mass:       0.008,
 			},
-			// &smarp.Particle{
-			//	C:          &smarp.Coord{X: 30, Y: 16},
-			//	Speed:      &smarp.Vector{Angle: math.Pi, Value: 0.5},
-			//	CharToShow: '3',
-			// },
+			&smarp.Particle{
+				C:          &smarp.Coord{X: 30, Y: 26},
+				Speed:      &smarp.Vector{Angle: math.Pi, Value: 0.2},
+				CharToShow: '3',
+				Mass:       0.008,
+			},
 		},
 	}
 
