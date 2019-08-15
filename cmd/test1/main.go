@@ -61,6 +61,12 @@ func main() {
 				Mass:       0.01,
 			},
 			&smarp.Particle{
+				C:          &smarp.Coord{X: 22, Y: 22},
+				Speed:      &smarp.Vector{},
+				CharToShow: '4',
+				Mass:       0.03,
+			},
+			&smarp.Particle{
 				C:          &smarp.Coord{X: 40, Y: 16},
 				Speed:      &smarp.Vector{Angle: 0, Value: 0.3},
 				CharToShow: '2',
